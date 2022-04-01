@@ -10,7 +10,10 @@ import {
 import { UserService } from './user.service';
 import { PostService } from './post.service';
 import { User as UserModel, Post as PostModel } from '@prisma/client';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Cat } from './post.entity';
 
+@ApiTags('posts')
 @Controller()
 export class AppController {
   constructor(
@@ -19,6 +22,8 @@ export class AppController {
   ) {}
 
   @Get('post/:id')
+  @ApiOperation({ summary: 'get post' })
+  @ApiResponse({ status: 200, description: 'The found record.', type: Cat })
   async getPostById(@Param('id') id: string): Promise<PostModel> {
     return this.postService.post({ id: Number(id) });
   }
