@@ -1,0 +1,14 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Post {
+  id: Int!
+  title: String!
+}
+
+type Query {
+  helloWorld: String!
+  hello(name: String!): String!
+  post(id: Int!): Post!
+}
