@@ -6,12 +6,14 @@ import {
   Body,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { PostService } from './post.service';
 import { User as UserModel, Post as PostModel } from '@prisma/client';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Cat } from './post.entity';
+import { FirebaseAuthGuard } from './auth/firebase-auth.guard';
 
 @ApiTags('posts')
 @Controller()
@@ -22,6 +24,7 @@ export class AppController {
   ) {}
 
   @Get('post/:id')
+  @UseGuards(FirebaseAuthGuard)
   @ApiOperation({ summary: 'get post' })
   @ApiResponse({ status: 200, description: 'The found record.', type: Cat })
   async getPostById(@Param('id') id: string): Promise<PostModel> {
