@@ -1,9 +1,10 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppResolver } from './app.resolver';
+import { AuthMiddleware } from './common/middleware/auth.middleware';
 import { PostService } from './post.service';
 import { PostsModule } from './posts/posts.module';
 import { PrismaService } from './prisma.service';
@@ -21,4 +22,8 @@ import { UserService } from './user.service';
   controllers: [AppController],
   providers: [PrismaService, UserService, PostService, AppResolver],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}
